@@ -1,11 +1,7 @@
 
 
-def part1(path):
-    file = open(path)
-    rows = file.read().splitlines()
-
+def readAndCreateStacks(rows):
     indexesStacks = []
-
     for i in range(len(rows[8])):
         if(rows[8][i:i+1] != ' '):
             indexesStacks.append(i)
@@ -16,6 +12,10 @@ def part1(path):
         for j in range(8):
             if rows[7-j][index] != " ":
                 stacks[i].append(rows[7-j][index])
+    return stacks
+
+
+def readAndApplyIntructionsPart1(stacks, rows):
     for i in range(10, len(rows)):
         splited = rows[i].split(" ")
         amount = int(splited[1])
@@ -24,32 +24,10 @@ def part1(path):
         for j in range(amount):
             moving = stacks[depart].pop()
             stacks[destination].append(moving)
-    #instructions : line
-    result = ""
-    for i in range(len(stacks)):
-        result = result+stacks[i][len(stacks[i])-1]
-    return(result)
+    return stacks
 
 
-print(part1("day5.txt"))
-
-
-def part2(path):
-    file = open(path)
-    rows = file.read().splitlines()
-
-    indexesStacks = []
-
-    for i in range(len(rows[8])):
-        if(rows[8][i:i+1] != ' '):
-            indexesStacks.append(i)
-    numberOfStacks = len(indexesStacks)
-    stacks = [[] for i in range(numberOfStacks)]
-    for i in range(numberOfStacks):
-        index = indexesStacks[i]
-        for j in range(8):
-            if rows[7-j][index] != " ":
-                stacks[i].append(rows[7-j][index])
+def readAndApplyIntructionsPart2(stacks, rows):
     for i in range(10, len(rows)):
         splited = rows[i].split(" ")
         amount = int(splited[1])
@@ -64,11 +42,34 @@ def part2(path):
         for k in range(amount):
             moving2 = temporaryStack.pop()
             stacks[destination].append(moving2)
-    #instructions : line
+    return stacks
+
+
+def buildingResult(stacks):
     result = ""
     for i in range(len(stacks)):
-        result = result+stacks[i][len(stacks[i])-1]
-    return(result)
+        result = result + \
+            stacks[i][len(stacks[i])-1]
+    return result
+
+
+def part1(path):
+    file = open(path)
+    rows = file.read().splitlines()
+    stacks = readAndCreateStacks(rows)
+    stacksAfterInstructions = readAndApplyIntructionsPart1(stacks, rows)
+    return(buildingResult(stacksAfterInstructions))
+
+
+print(part1("day5.txt"))
+
+
+def part2(path):
+    file = open(path)
+    rows = file.read().splitlines()
+    stacks = readAndCreateStacks(rows)
+    stacksAfterInstructions = readAndApplyIntructionsPart2(stacks, rows)
+    return(buildingResult(stacksAfterInstructions))
 
 
 print(part2("day5.txt"))
